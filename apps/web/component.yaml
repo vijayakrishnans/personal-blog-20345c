@@ -1,0 +1,118 @@
+apiVersion: sourceplane.io/v1
+kind: Component
+metadata:
+  name: web
+  description: The Sanity-backed blog and its embedded Studio (Next.js on Cloudflare Workers + Static Assets via @opennextjs/cloudflare, per environment)
+spec:
+  type: cloudflare-workers-assets-turbo
+  lifecycle: production
+  owner: platform
+  # Its pages, attached to it in the workspace's catalog: what the Docs
+  # library shows for it, and what the catalog's docs and runbook checks read.
+  # Generated from what this manifest and its sources declare.
+  docs:
+    overview: docs/overview.md
+    pages:
+      - { path: docs/architecture.md, role: architecture, title: Architecture }
+      - { path: docs/runbook.md, role: runbook, title: Runbook }
+  # `app`, not `web`: a domain and a component share one name space in the
+  # catalog, and a domain called `web` hid this component from it.
+  domain: app
+  path: apps/web
+  # Its own lane per environment: the Next.js build is the longest job in the
+  # plan, and a shared lane would wait on it.
+  lane: isolated
+  # No dependsOn: the blog reads no wiring and binds nothing, so there is no
+  # infra component to deploy before it. A component under infra/ that this
+  # Worker comes to read wiring from goes here, `mode: enforced` with a
+  # `modeRules` entry making it advisory on github-pull-request, so one
+  # convergence applies it first.
+  #
+  # The Sanity project id and dataset: public values `next build` inlines into
+  # the server and the Studio bundles, stored per environment as the product's
+  # secrets SANITY_PROJECT_ID and SANITY_DATASET (README → Connecting Sanity).
+  # BEST-EFFORT references, wire-now-seed-later: a key nobody has stored yet
+  # is skipped when the job resolves its secrets (no env var, no failure), and
+  # a build without a project id is the blog with its sample posts and a
+  # "connect your Sanity project" notice — so a fresh product deploys and
+  # serves before its owner has a Sanity project at all. The read token is
+  # not here: it is read at request time, a Worker secret.
+  optionalSecretEnv:
+    NEXT_PUBLIC_SANITY_PROJECT_ID: "secret://org_b66409759b6e40b3b69369f8c03e151e/personal-blog-20345c/{{ .environment }}/SANITY_PROJECT_ID"
+    NEXT_PUBLIC_SANITY_DATASET: "secret://org_b66409759b6e40b3b69369f8c03e151e/personal-blog-20345c/{{ .environment }}/SANITY_DATASET"
+  subscribe:
+    environments:
+      - name: dev
+        profile: verify
+      - name: stage
+        profile: verify
+        profileRules:
+          - profile: deploy
+            when:
+              triggerRef: github-push-main
+      - name: prod
+        profile: verify
+        profileRules:
+          - profile: deploy
+            when:
+              triggerRef: github-push-main
+  # How the site runs itself for orun.work's live Preview tab
+  # (saas-parallel-baselining PB4): `orun preview` starts this, and a coding
+  # session keeps it running while it works, so the person watches it change
+  # as it is built. The dev server binds the box's loopback only, on a fixed
+  # port, and installs first, so a checkout the session has not installed yet
+  # still comes up.
+  # It installs only this app's packages and caps the heap: the box is shared
+  # with the agent. No Sanity project is configured here, so the blog renders
+  # its bundled sample posts under the "connect your Sanity project" notice,
+  # as a fresh deploy does.
+  preview:
+    run:
+      - sh
+      - -c
+      - pnpm install --frozen-lockfile --prefer-offline --filter "@app/web..." && exec node_modules/.bin/next dev -H 127.0.0.1 -p 3000
+    port: 3000
+    path: /
+    env:
+      NODE_OPTIONS: --max-old-space-size=1024
+      NEXT_TELEMETRY_DISABLED: "1"
+  parameters:
+    nodeVersion: "22"
+    pnpmVersion: "10.12.1"
+
+    workspaceDir: ../..
+    appDir: .
+
+    turboFilter: "@app/web"
+    wranglerConfig: wrangler.jsonc
+
+    # @opennextjs/cloudflare emits a Worker entrypoint plus a static-assets
+    # directory bound via ASSETS — both deploy in one `wrangler deploy`.
+    workerEntrypoint: .open-next/worker.js
+    assetsDir: .open-next/assets
+
+    # Per-env worker name: personal-blog-20345c-web-{dev,stage,prod}.
+    workerName: personal-blog-20345c-web
+    environmentAwareWorkerName: true
+
+    # The account's workers.dev subdomain; exported to the smoke step as
+    # ${WORKERS_DEV_SUBDOMAIN} and used to build ${DEPLOYED_URL}.
+    workersDevSubdomain: vijayakrishnan12994
+
+    installCommand: pnpm install --frozen-lockfile
+    buildCommand: pnpm exec turbo run build --filter=@app/web
+
+    # Smoke: the home page renders the blog's layout (its <html> classes —
+    # not the blog's name, which is the owner's to change and HTML-escaped
+    # when it carries an `&` or `'`), whether it shows sample posts or the
+    # owner's; and the draft-mode route, which only the Worker's server code
+    # answers, refuses a request without a preview secret (401), with or
+    # without a project and a read token. The page is buffered before grep so
+    # an early match cannot SIGPIPE curl.
+    smokeCommand: "html=$(curl -sfL \"${DEPLOYED_URL}/\") && echo \"${html}\" | grep -q 'bg-white text-black' && test \"$(curl -s -o /dev/null -w '%{http_code}' \"${DEPLOYED_URL}/api/draft-mode/enable\")\" = 401"
+  labels:
+    team: platform
+    layer: delivery
+    surface: web
+    runtime: cloudflare
+# orun: redeploy 01-product as_36b839337bb347b7a958
