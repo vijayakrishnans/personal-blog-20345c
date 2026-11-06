@@ -1,0 +1,21 @@
+# Task Contract: APP-1
+name: "APP-1"
+title: "The plan, written down"
+epic: "personal-blog"
+milestone: 1
+
+description: >
+  Write the approved plan down as its design documents. Create the epic's doc
+  set under specs/epics/personal-blog/, write a task contract per milestone
+  under tasks/, and attach each doc to the plan with orun spec push.
+
+done_when:
+  - "specs/epics/personal-blog/ has README.md, design.md, implementation-plan.md, risks-and-open-questions.md and IMPLEMENTATION-STATUS.md"
+  - "tasks/ has a TaskContract.yaml for APP-1, APP-2, APP-3"
+  - "Each of the five docs is attached to the plan with orun spec push"
+
+gates: []
+
+notes: >
+  This task writes no code. The approved plan is its own design adoption.
+  The PR lands when the Work Agent asks to ship.

@@ -1,0 +1,22 @@
+# Task Contract: APP-3
+name: "APP-3"
+title: "Your articles published"
+epic: "personal-blog"
+milestone: 3
+
+description: >
+  Replace the sample content with the owner's own articles. 'How to get hired
+  in the AI era' and 'Agentic coding' are the first published posts.
+
+done_when:
+  - "Sample posts are replaced with the owner's own articles"
+  - "'How to get hired in the AI era' is published and readable on its own page"
+  - "'Agentic coding' is published and readable on its own page"
+  - "Posts have categories or tags so visitors can browse by topic"
+  - "The about/author section shows who writes the blog"
+
+gates: []
+
+notes: >
+  Content is written in the Sanity Studio. The schema may need extending with
+  categories/tags if not already present.
