@@ -41,5 +41,12 @@ export default defineType({
       },
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: "biography",
+      title: "Biography",
+      type: "array",
+      of: [{ type: "block" }],
+      description: "A short bio displayed on the blog",
+    }),
   ],
 });

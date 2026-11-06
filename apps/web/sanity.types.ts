@@ -66,6 +66,7 @@ export type Post = {
   };
   date?: string;
   author?: AuthorReference;
+  categories?: Array<string>;
 };
 
 export type Author = {
@@ -83,6 +84,24 @@ export type Author = {
     alt?: string;
     _type: "image";
   };
+  biography?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal";
+    listItem?: never;
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
 };
 
 export type SanityImageCrop = {
@@ -519,6 +538,7 @@ export type HeroQueryResult = {
     _type: "image";
   } | null;
   date: string;
+  categories: Array<string> | null;
   author: {
     name: string | "Anonymous";
     picture: {
@@ -529,6 +549,24 @@ export type HeroQueryResult = {
       alt?: string;
       _type: "image";
     } | null;
+    biography: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal";
+      listItem?: never;
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }> | null;
   } | null;
 } | null;
 
@@ -550,6 +588,7 @@ export type MoreStoriesQueryResult = Array<{
     _type: "image";
   } | null;
   date: string;
+  categories: Array<string> | null;
   author: {
     name: string | "Anonymous";
     picture: {
@@ -560,6 +599,24 @@ export type MoreStoriesQueryResult = Array<{
       alt?: string;
       _type: "image";
     } | null;
+    biography: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal";
+      listItem?: never;
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }> | null;
   } | null;
 }>;
 
@@ -599,6 +656,7 @@ export type PostQueryResult = {
     _type: "image";
   } | null;
   date: string;
+  categories: Array<string> | null;
   author: {
     name: string | "Anonymous";
     picture: {
@@ -609,6 +667,24 @@ export type PostQueryResult = {
       alt?: string;
       _type: "image";
     } | null;
+    biography: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal";
+      listItem?: never;
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }> | null;
   } | null;
 } | null;
 

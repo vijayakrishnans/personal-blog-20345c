@@ -90,23 +90,36 @@ export default async function RootLayout({
                   value={footer as PortableTextBlock[]}
                 />
               ) : (
-                <div className="flex flex-col items-center py-28 lg:flex-row">
-                  <h3 className="mb-10 text-center text-4xl font-bold leading-tight tracking-tighter lg:mb-0 lg:w-1/2 lg:pr-4 lg:text-left lg:text-5xl">
-                    Built with Next.js.
-                  </h3>
-                  <div className="flex flex-col items-center justify-center lg:w-1/2 lg:flex-row lg:pl-4">
-                    <a
-                      href="https://nextjs.org/docs"
-                      className="mx-3 mb-6 border border-black bg-black py-3 px-12 font-bold text-white transition-colors duration-200 hover:bg-white hover:text-black lg:mb-0 lg:px-8"
-                    >
-                      Read Documentation
-                    </a>
-                    <a
-                      href="https://github.com/vercel/next.js/tree/canary/examples/cms-sanity"
-                      className="mx-3 font-bold hover:underline"
-                    >
-                      View on GitHub
-                    </a>
+                <div className="flex flex-col py-16 md:py-20">
+                  {/* About / Author section */}
+                  <div className="mx-auto max-w-xl text-center mb-12">
+                    <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-300 text-2xl font-bold text-gray-700">
+                      V
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2">Vijayakrishnan</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      Platform engineer and builder. Writing about software, AI,
+                      and the craft of building things that last.
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-center lg:flex-row lg:justify-between border-t border-gray-200 pt-8">
+                    <p className="text-sm text-gray-500 mb-4 lg:mb-0">
+                      &copy; {new Date().getFullYear()} Vijayakrishnan
+                    </p>
+                    <div className="flex gap-4">
+                      <a
+                        href="https://github.com/vijayakrishnan"
+                        className="text-sm text-gray-500 hover:text-gray-700 hover:underline"
+                      >
+                        GitHub
+                      </a>
+                      <a
+                        href="https://twitter.com/vijayakrishnan"
+                        className="text-sm text-gray-500 hover:text-gray-700 hover:underline"
+                      >
+                        Twitter
+                      </a>
+                    </div>
                   </div>
                 </div>
               )}
