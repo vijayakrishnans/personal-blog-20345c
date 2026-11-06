@@ -10,7 +10,8 @@ const postFields = /* groq */ `
   excerpt,
   coverImage,
   "date": coalesce(date, _updatedAt),
-  "author": author->{"name": coalesce(name, "Anonymous"), picture},
+  "author": author->{"name": coalesce(name, "Anonymous"), picture, biography},
+  categories,
 `;
 
 export const heroQuery = defineQuery(`

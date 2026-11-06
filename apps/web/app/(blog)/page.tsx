@@ -40,9 +40,10 @@ function HeroPost({
   coverImage,
   date,
   author,
+  categories,
 }: Pick<
   Exclude<HeroQueryResult, null>,
-  "title" | "coverImage" | "date" | "excerpt" | "author" | "slug"
+  "title" | "coverImage" | "date" | "excerpt" | "author" | "slug" | "categories"
 >) {
   return (
     <article>
@@ -59,6 +60,18 @@ function HeroPost({
           <div className="mb-4 text-lg md:mb-0">
             <DateComponent dateString={date} />
           </div>
+          {categories && categories.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {categories.map((cat) => (
+                <span
+                  key={cat}
+                  className="inline-block rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-700"
+                >
+                  {cat}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
         <div>
           {excerpt && (
@@ -92,6 +105,7 @@ export default async function Page() {
           excerpt={heroPost.excerpt}
           date={heroPost.date}
           author={heroPost.author}
+          categories={heroPost.categories}
         />
       ) : (
         <Onboarding />

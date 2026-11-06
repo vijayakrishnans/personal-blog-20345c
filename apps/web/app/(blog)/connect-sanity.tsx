@@ -2,8 +2,8 @@ import Link from "next/link";
 
 /**
  * Shown above every blog page while the build has no Sanity project id: the
- * posts below it are the bundled samples (sanity/lib/sample.ts), and this says
- * so, and where the steps to connect a project are. Gone once one is set.
+ * posts below it are the bundled content (sanity/lib/sample.ts). Once a Sanity
+ * project is connected, content is read from the dataset and this notice is gone.
  */
 export default function ConnectSanityNotice() {
   return (
@@ -13,15 +13,15 @@ export default function ConnectSanityNotice() {
       className="border-b border-amber-200 bg-amber-50 text-amber-950"
     >
       <p className="container mx-auto px-5 py-3 text-center text-sm">
-        <strong>Sample content.</strong> This blog is not connected to a Sanity
-        project yet.{" "}
+        <strong>Pre-published content.</strong> These articles are bundled with
+        the site. Connect a{" "}
         <Link
-          href="/posts/connect-your-sanity-project"
+          href="https://sanity.io"
           className="font-semibold underline hover:text-amber-700"
         >
-          Connect your Sanity project
+          Sanity project
         </Link>{" "}
-        to publish your own posts.
+        to manage posts from the Studio at <code className="text-xs font-mono bg-amber-100 px-1 rounded">/studio</code>.
       </p>
     </div>
   );

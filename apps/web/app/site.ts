@@ -3,4 +3,4 @@
 // the blog itself (and a new Settings document starts from it). Instantiating
 // the blog under a new name rewrites this line to that name, so keep it
 // literal and on one line.
-export const SITE_NAME = "Personal Blog";
+export const SITE_NAME = "Vijayakrishnan";
