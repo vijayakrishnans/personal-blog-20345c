@@ -1,0 +1,22 @@
+# Task Contract: APP-2
+name: "APP-2"
+title: "Blog running with Sanity"
+epic: "personal-blog"
+milestone: 2
+
+description: >
+  Connect the blog to a real Sanity project. The home page reads posts from
+  Sanity. The Studio loads and shows the content schema. Draft mode works.
+
+done_when:
+  - "The home page lists sample blog posts from Sanity"
+  - "Each post has its own page with title, body, author and date"
+  - "Sanity Studio at /studio loads and shows the content schema (posts, authors, settings)"
+  - "Draft mode works — unpublished posts are visible with a preview indicator"
+  - "The site is live on the Cloudflare account"
+
+gates: []
+
+notes: >
+  Requires a Sanity project to be created. The blog deploys and serves without
+  one (sample posts + notice), so the pipeline can converge first.
